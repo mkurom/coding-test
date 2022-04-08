@@ -4,7 +4,7 @@
 
 - node: 14 or later
 
-
+```
 $ npm install
 $ npm start
 ```
