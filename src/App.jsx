@@ -32,16 +32,11 @@ export const App = () => {
   return (
     <div>
       <h1>TODOアプリ</h1>
-
-      <form>
-        <label>
-          TODO:
-          <input type="text" value={todoText} onChange={onChangeText} />
-        </label>
-        <input type="submit" value="作成" onClick={onClickAdd} />
-      </form>
+      <input type="text" value={todoText} onChange={onChangeText} />
+      <button type="button" onClick={onClickAdd}>作成</button>
 
       <TodoList todoItems={todoList} />
     </div>
   );
 }
+
