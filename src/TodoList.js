@@ -1,12 +1,12 @@
+export const TodoList = (props) => {
 
-export const TodoList = () => {
+  const { todoItems } = props;
 
-  // sample data
-  const dataList = ["todo1", "todo2", "todo3", "todo4", "todo5"];
+  if (todoItems === undefined) return;
 
-  const todoList = dataList.map((item) =>
-    <li key={item}>
-      {item}
+  const todoList = todoItems.map((item) =>
+    <li key={item.text}>
+      {item.text}
     </li>
   );
 
