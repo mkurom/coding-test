@@ -54,7 +54,7 @@ export const TodoList = (props) => {
           </div>
         )
       }
-      <p>Todo件数: {todoItems.length} 件</p>
+      <p>Todo件数: {filterdList.length} 件</p>
       <ul>{todoList}</ul>
     </div>
   );
