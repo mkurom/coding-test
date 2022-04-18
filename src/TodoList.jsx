@@ -1,17 +1,24 @@
 import { completeTodo, incompleteTodo } from './constant.js';
-import React from "react";
+import React, { useState, useCallback } from "react";
 
 export const TodoList = (props) => {
   const { todoItems, onClickDone, onClickDelete } = props;
 
-  const [todoFilter, setTodoFilter] = React.useState(0);
-  const onClickFilter = (filterIndex) => {
-    setTodoFilter(filterIndex);
-  };
-
   if (todoItems === undefined) return;
 
+
+  const [todoFilter, setTodoFilter] = useState(0);
+  const onClickFilter = (e) => {
+    setTodoFilter(Number(e.target.value));
+  };
+
+  const [searchText, setSearchText] = useState("");
+  const onsetSearchText = (event) => {
+    setSearchText(event.target.value);
+  };
+
   var filterdList = [];
+
   const newTodoList = [...todoItems];
 
   if (todoFilter === completeTodo) {
@@ -24,6 +31,12 @@ export const TodoList = (props) => {
     });
   } else {
     filterdList = newTodoList;
+  }
+
+  if (searchText != "") {
+    filterdList = filterdList.filter((todoItem) => {
+      return todoItem.text.includes(searchText);
+    });
   }
 
   const todoList = filterdList.map((item, index) => {
@@ -45,15 +58,18 @@ export const TodoList = (props) => {
 
   return (
     <div>
-      {todoItems.length > 0 &&
-        (
-          <div onChange={(e) => onClickFilter(Number(e.target.value))}>
+      {todoItems.length > 0 && (
+        <div>
+          <p>キーワード検索</p>
+          <input type="text" value={searchText} onChange={onsetSearchText} />
+          <div onChange={onClickFilter}>
+            <p>フィルター</p>
             <input type="radio" name="theme" value="0" />全て
             <input type="radio" name="theme" value="1" />完了
             <input type="radio" name="theme" value="2" />未完了
           </div>
-        )
-      }
+        </div>
+      )}
       <p>Todo件数: {filterdList.length} 件</p>
       <ul>{todoList}</ul>
     </div>
