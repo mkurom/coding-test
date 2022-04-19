@@ -1,13 +1,15 @@
 import './App.css';
+import constant from './constant.js';
 import React, { useState, useCallback } from "react";
 import { TodoList } from './TodoList';
+import { useTodoList } from './useTodoList';
 
 export const App = () => {
 
   // input用テキスト
   const [todoText, setTodoText] = useState("");
   // todoリスト
-  const [todoList, setTodoList] = React.useState([]);
+  const { todoList, addTodo, updateTodo, deleteTodo, getFilterdTodoList, getSearchedTodoList } = useTodoList();
 
   const onChangeText = (event) => {
     setTodoText(event.target.value);
@@ -16,32 +18,18 @@ export const App = () => {
   const onClickAdd = () => {
     if (todoText === "") return;
 
-    const newTodoList = [...todoList];
-
-    const newTodoItem = {
-      text: todoText,
-      done: false
-    }
-
-    newTodoList.push(newTodoItem);
-    setTodoList(newTodoList);
+    addTodo(todoText);
 
     setTodoText("");
   };
 
-  const onClickDone = ((index) => {
-    const newTodoList = [...todoList];
+  const onClickDone = (index) => {
+    updateTodo(index);
+  };
 
-    newTodoList[index].done = !newTodoList[index].done;
-    setTodoList(newTodoList);
-  });
-
-  const onClickDelete = ((index) => {
-    const newTodoList = [...todoList];
-
-    newTodoList.splice(index, 1);
-    setTodoList(newTodoList);
-  });
+  const onClickDelete = (index) => {
+    deleteTodo(index);
+  };
 
   return (
     <div>
