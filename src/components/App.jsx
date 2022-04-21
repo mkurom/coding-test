@@ -1,8 +1,8 @@
-import './App.css';
+import './style/App.css';
 
 import React, { useState } from "react";
-import { TodoList } from './TodoList';
-import { useTodoList } from './useTodoList';
+import { TodoList } from '../components/TodoList';
+import { useTodoList } from '../hooks/useTodoList';
 
 export const App = () => {
 
