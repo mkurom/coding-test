@@ -1,36 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
+import { completeTodo, incompleteTodo } from '../constants/constant.js';
 
-export const TodoList = (props) => {
-  const { orgTodoList, onClickDone, onClickDelete, getFilterdTodoList, getSearchedTodoList, getDisplayList } = props;
+export const TodoList = memo((props) => {
+  const {
+    orgTodoList,
+    onClickUpdate,
+    onClickDelete,
+  } = props;
 
-  if (orgTodoList === undefined) return;
+  console.log('TodoList');
 
   const [todoFilter, setTodoFilter] = useState(0);
-  const onClickFilter = (e) => {
+  const onChangeFilter = (e) => {
     setTodoFilter(Number(e.target.value));
   };
 
   const [searchText, setSearchText] = useState("");
-  const onsetSearchText = (e) => {
+  const onChangeText = (e) => {
     setSearchText(e.target.value);
   };
 
-  const filterdList = getFilterdTodoList(todoFilter);
+  var displayCount = 0;
 
-  const searchedList = getSearchedTodoList(searchText);
-
-  var tmpList = [];
-
-  tmpList = getDisplayList(filterdList, searchedList);
-
-  const todoList = tmpList.map((item, index) => {
+  const todoList = orgTodoList.map((item, index) => {
+    var doneText = " 未完了";
+    if (todoFilter == completeTodo) {
+      if (item.done) {
+        doneText = " 完了済";
+        displayCount++;
+      }
+      else {
+        return (<></>);
+      }
+    }
+    else if (todoFilter == incompleteTodo) {
+      if (item.done) {
+        return (<></>);
+      }
+      else {
+        doneText = " 未完了";
+        displayCount++;
+      }
+    }
+    else {
+      doneText = item.done ? " 完了済" : " 未完了";
+      displayCount++;
+    }
     return (
       <li key={item.text}>
         <div>
           {item.text}
-          {item.done && " 完了済"}
+          {doneText}
           <div>
-            <button type="button" onClick={() => onClickDone(index)}>{
+            <button type="button" onClick={() => onClickUpdate(index)}>{
               item.done ? "未完了" : "完了"
             }</button>
             <button type="button" onClick={() => onClickDelete(index)}>削除</button>
@@ -45,17 +67,17 @@ export const TodoList = (props) => {
       {orgTodoList.length > 0 && (
         <div>
           <p>キーワード検索</p>
-          <input type="text" value={searchText} onChange={onsetSearchText} />
-          <div onChange={onClickFilter}>
+          <input type="text" value={searchText} onChange={onChangeText} />
+          <div onChange={onChangeFilter}>
             <p>フィルター</p>
-            <input type="radio" name="theme" value="0" />全て
+            <input type="radio" name="theme" value="0" defaultChecked />全て
             <input type="radio" name="theme" value="1" />完了
             <input type="radio" name="theme" value="2" />未完了
           </div>
         </div>
       )}
-      <p>Todo件数: {tmpList.length} 件</p>
+      <p>Todo件数: {displayCount} 件</p>
       <ul>{todoList}</ul>
     </div>
   );
-}
+});

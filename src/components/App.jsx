@@ -1,15 +1,21 @@
 import './style/App.css';
 
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { TodoList } from '../components/TodoList';
 import { useTodoList } from '../hooks/useTodoList';
 
-export const App = () => {
+export const App = memo(() => {
 
-  // input用テキスト
+  console.log('App');
+
   const [todoText, setTodoText] = useState("");
-  // todoリスト
-  const { todoList, addTodo, updateTodo, deleteTodo, getFilterdTodoList, getSearchedTodoList, getDisplayList } = useTodoList();
+
+  const {
+    todoList,
+    addTodo,
+    updateTodo,
+    deleteTodo,
+  } = useTodoList();
 
   const onChangeText = (event) => {
     setTodoText(event.target.value);
@@ -17,22 +23,17 @@ export const App = () => {
 
   const onClickAdd = () => {
     if (todoText === "") return;
+    console.log(todoText);
 
     const replacedText = todoText.trim();
 
-    if (replacedText === "") return;
-
+    if (replacedText === "") {
+      setTodoText("");
+      return;
+    }
     addTodo(replacedText);
 
     setTodoText("");
-  };
-
-  const onClickDone = (index) => {
-    updateTodo(index);
-  };
-
-  const onClickDelete = (index) => {
-    deleteTodo(index);
   };
 
   return (
@@ -42,13 +43,10 @@ export const App = () => {
       <button type="button" onClick={onClickAdd}>作成</button>
       <TodoList
         orgTodoList={todoList}
-        onClickDone={onClickDone}
-        onClickDelete={onClickDelete}
-        getFilterdTodoList={getFilterdTodoList}
-        getSearchedTodoList={getSearchedTodoList}
-        getDisplayList={getDisplayList}
+        onClickUpdate={updateTodo}
+        onClickDelete={deleteTodo}
       />
     </div>
   );
-}
+});
 
