@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from "react";
+import { useState } from "react";
+import { completeTodo, incompleteTodo } from './constant.js';
 
 export const useTodoList = () => {
   const [todoList, setTodoList] = useState([]);
@@ -13,8 +14,6 @@ export const useTodoList = () => {
 
     newTodoList.push(newTodoItem);
     setTodoList(newTodoList);
-
-    console.log('add Todo');
   }
 
   const updateTodo = (index) => {
@@ -31,5 +30,54 @@ export const useTodoList = () => {
     setTodoList(newTodoList);
   }
 
-  return { todoList, addTodo, updateTodo, deleteTodo };
+  const getFilterdTodoList = (selectedIndex) => {
+    var filterdList = [];
+    const newTodoList = [...todoList];
+
+    if (selectedIndex === completeTodo) {
+      filterdList = newTodoList.filter((todoItem) => {
+        return todoItem.done;
+      });
+    } else if (selectedIndex === incompleteTodo) {
+      filterdList = newTodoList.filter((todoItem) => {
+        return !todoItem.done;
+      });
+    } else {
+      filterdList = newTodoList;
+    }
+
+    return filterdList;
+  }
+
+  const getSearchedTodoList = (searchText) => {
+    var searchedList = [];
+    const newTodoList = [...todoList];
+
+    if (searchText === "") {
+      console.log(newTodoList);
+      return newTodoList;
+    }
+
+    searchedList = newTodoList.filter((todoItem) => {
+      return todoItem.text.includes(searchText);
+    });
+
+    return searchedList;
+  }
+
+  const getDisplayList = (filterdList, searchedList) => {
+
+    const newFilterdList = [...filterdList];
+    const newSearchedList = [...searchedList];
+
+    const duplicatedList = newFilterdList.filter(
+      (item, index) => {
+        return item.text === newSearchedList[index].text;
+      }
+    )
+
+    return duplicatedList;
+  }
+
+  return { todoList, addTodo, updateTodo, deleteTodo, getFilterdTodoList, getSearchedTodoList, getDisplayList };
 }

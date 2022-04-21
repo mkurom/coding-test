@@ -1,11 +1,9 @@
-import { completeTodo, incompleteTodo } from './constant.js';
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 
 export const TodoList = (props) => {
-  const { todoItems, onClickDone, onClickDelete } = props;
+  const { orgTodoList, onClickDone, onClickDelete, getFilterdTodoList, getSearchedTodoList, getDisplayList } = props;
 
-  if (todoItems === undefined) return;
-
+  if (orgTodoList === undefined) return;
 
   const [todoFilter, setTodoFilter] = useState(0);
   const onClickFilter = (e) => {
@@ -13,33 +11,19 @@ export const TodoList = (props) => {
   };
 
   const [searchText, setSearchText] = useState("");
-  const onsetSearchText = (event) => {
-    setSearchText(event.target.value);
+  const onsetSearchText = (e) => {
+    setSearchText(e.target.value);
   };
 
-  var filterdList = [];
+  const filterdList = getFilterdTodoList(todoFilter);
 
-  const newTodoList = [...todoItems];
+  const searchedList = getSearchedTodoList(searchText);
 
-  if (todoFilter === completeTodo) {
-    filterdList = newTodoList.filter((todoItem) => {
-      return todoItem.done;
-    });
-  } else if (todoFilter === incompleteTodo) {
-    filterdList = newTodoList.filter((todoItem) => {
-      return !todoItem.done;
-    });
-  } else {
-    filterdList = newTodoList;
-  }
+  var tmpList = [];
 
-  if (searchText != "") {
-    filterdList = filterdList.filter((todoItem) => {
-      return todoItem.text.includes(searchText);
-    });
-  }
+  tmpList = getDisplayList(filterdList, searchedList);
 
-  const todoList = filterdList.map((item, index) => {
+  const todoList = tmpList.map((item, index) => {
     return (
       <li key={item.text}>
         <div>
@@ -58,7 +42,7 @@ export const TodoList = (props) => {
 
   return (
     <div>
-      {todoItems.length > 0 && (
+      {orgTodoList.length > 0 && (
         <div>
           <p>キーワード検索</p>
           <input type="text" value={searchText} onChange={onsetSearchText} />
@@ -70,7 +54,7 @@ export const TodoList = (props) => {
           </div>
         </div>
       )}
-      <p>Todo件数: {filterdList.length} 件</p>
+      <p>Todo件数: {tmpList.length} 件</p>
       <ul>{todoList}</ul>
     </div>
   );
