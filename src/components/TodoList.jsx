@@ -62,6 +62,26 @@ export const TodoList = memo((props) => {
     );
   });
 
+  console.log(todoList);
+
+  var filteredTodoList = [];
+  const tmpCount = displayCount;
+  displayCount = 0;
+  if (searchText !== "") {
+    filteredTodoList = todoList.map((item, index) => {
+      if (item.key !== null && item.key.match(searchText)) {
+        displayCount++;
+        return item;
+      }
+      return <></>;
+
+    });
+  }
+  else {
+    filteredTodoList = [...todoList];
+    displayCount = tmpCount;
+  }
+
   return (
     <div>
       {orgTodoList.length > 0 && (
@@ -77,7 +97,7 @@ export const TodoList = memo((props) => {
         </div>
       )}
       <p>Todo件数: {displayCount} 件</p>
-      <ul>{todoList}</ul>
+      <ul>{filteredTodoList}</ul>
     </div>
   );
 });
