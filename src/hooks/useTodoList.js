@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { completeTodo, incompleteTodo } from './constant.js';
+import { completeTodo, incompleteTodo } from '../constants/constant.js';
 
 export const useTodoList = () => {
   const [todoList, setTodoList] = useState([]);
