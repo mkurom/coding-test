@@ -1,6 +1,9 @@
 import './style/App.css';
 
 import React, { useState, memo } from "react";
+import { Input } from '../components/Input';
+import { Filter } from '../components/Filter';
+import { Search } from '../components/Search';
 import { TodoList } from '../components/TodoList';
 import { useTodoList } from '../hooks/useTodoList';
 
@@ -8,43 +11,43 @@ export const App = memo(() => {
 
   console.log('App');
 
-  const [todoText, setTodoText] = useState("");
-
   const {
-    todoList,
     addTodo,
     updateTodo,
     deleteTodo,
+    searchedTodo,
   } = useTodoList();
 
-  const onChangeText = (event) => {
-    setTodoText(event.target.value);
+  const [todoFilter, setTodoFilter] = useState(0);
+  const onChangeFilter = (value) => {
+    setTodoFilter(value);
   };
 
-  const onClickAdd = () => {
-    if (todoText === "") return;
-    console.log(todoText);
-
-    const replacedText = todoText.trim();
-
-    if (replacedText === "") {
-      setTodoText("");
-      return;
-    }
-    addTodo(replacedText);
-
-    setTodoText("");
-  };
+  const [searchText, setSearchText] = useState("");
+  const onChangeSearchText = (value) => {
+    setSearchText(value);
+  }
 
   return (
     <div>
       <h1>TODOアプリ</h1>
-      <input type="text" value={todoText} onChange={onChangeText} />
-      <button type="button" onClick={onClickAdd}>作成</button>
+      <Input addTodo={addTodo} />
+
+      <Filter
+        onChange={onChangeFilter}
+      />
+
+      <Search
+        searchText={searchText}
+        onChangeSearchText={onChangeSearchText}
+      />
+
       <TodoList
-        orgTodoList={todoList}
+        searchText={searchText}
+        todoFilter={todoFilter}
         onClickUpdate={updateTodo}
         onClickDelete={deleteTodo}
+        searchedTodo={searchedTodo}
       />
     </div>
   );
