@@ -41,7 +41,7 @@ export const TodoList = memo((props) => {
       displayCount++;
     }
     return (
-      <li key={item.text}>
+      <li key={item.text + '_' + index.toString()}>
         <div>
           {item.text}
           {doneText}
