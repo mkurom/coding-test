@@ -1,6 +1,8 @@
 import React, { memo } from "react";
 import { completeTodo, incompleteTodo } from '../constants/constant.js';
 
+import styled from 'styled-components';
+
 export const TodoList = memo((props) => {
   const {
     searchText,
@@ -41,25 +43,45 @@ export const TodoList = memo((props) => {
       displayCount++;
     }
     return (
-      <li key={item.text + '_' + index.toString()}>
+      <SLi key={item.text + '_' + index.toString()}>
         <div>
           {item.text}
           {doneText}
-          <div>
-            <button type="button" onClick={() => onClickUpdate(index)}>{
-              item.done ? "未完了にする" : "完了にする"
-            }</button>
-            <button type="button" onClick={() => onClickDelete(index)}>削除</button>
-          </div>
+          <input
+            type="checkbox"
+            checked={item.done}
+            onChange={() => {
+              onClickUpdate(index);
+            }}
+          />
+          <SButton type="button" onClick={() => onClickDelete(index)}>削除</SButton>
         </div>
-      </li>
+      </SLi>
     );
   });
 
   return (
     <div>
-      <p>Todo件数: {displayCount} 件</p>
+      <h3>Todo件数: {displayCount} 件</h3>
       <ul>{filteredTodoList}</ul>
     </div>
   );
 });
+
+const SLi = styled.li`
+  list-style: none;
+`;
+
+const SButton = styled.button`
+  width: 100px;
+  margin-left:10px;
+  background-color: #ddd;
+  border: none;
+  border-radius: 6px;
+  padding: 2px;
+  &:hover {
+    background-color: #aaa;
+    color: #fff;
+    cursor: pointer;
+  }
+`;

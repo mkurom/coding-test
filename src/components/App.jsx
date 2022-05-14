@@ -1,11 +1,11 @@
-import './style/App.css';
-
 import React, { useState, memo } from "react";
 import { Input } from '../components/Input';
 import { Filter } from '../components/Filter';
 import { Search } from '../components/Search';
 import { TodoList } from '../components/TodoList';
 import { useTodoList } from '../hooks/useTodoList';
+
+import styled from 'styled-components';
 
 export const App = memo(() => {
 
@@ -29,11 +29,12 @@ export const App = memo(() => {
   }
 
   return (
-    <div>
-      <h1>TODOアプリ</h1>
+    <SDiv>
+      <SH1>TODOアプリ</SH1>
       <Input addTodo={addTodo} />
 
       <Filter
+        active={todoFilter}
         onChange={onChangeFilter}
       />
 
@@ -49,7 +50,15 @@ export const App = memo(() => {
         onClickDelete={deleteTodo}
         searchedTodo={searchedTodo}
       />
-    </div>
+    </SDiv>
   );
 });
 
+const SDiv = styled.div`
+  padding: 4px;
+  text-align: center;
+`;
+
+const SH1 = styled.h1`
+  // text-align: center;
+`;
