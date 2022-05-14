@@ -1,4 +1,5 @@
 import { memo } from "react";
+import styled from 'styled-components';
 
 export const Search = memo(({ searchText, onChangeSearchText }) => {
   console.log('Search');
@@ -11,8 +12,8 @@ export const Search = memo(({ searchText, onChangeSearchText }) => {
 
   return (
     <div>
-      <p>キーワード検索</p>
-      <input
+      <h3>キーワード検索</h3>
+      <SInput
         type="text"
         placeholder="Input keyword"
         value={searchText}
@@ -20,7 +21,27 @@ export const Search = memo(({ searchText, onChangeSearchText }) => {
           onChangeSearchText(e.target.value);
         }}
       />
-      <button type="button" onClick={onClickSearch}>クリア</button>
+      <SButton onClick={onClickSearch}>クリア</SButton>
     </div>
   );
 });
+
+const SInput = styled.input`
+  margin: 4px;
+  border: 1px solid DarkGray;
+  border-radius: 3px;
+`;
+
+const SButton = styled.button`
+  width: 100px;
+  margin-left:10px;
+  background-color: #ddd;
+  border: none;
+  border-radius: 6px;
+  padding: 2px;
+  &:hover {
+    background-color: #aaa;
+    color: #fff;
+    cursor: pointer;
+  }
+`;
